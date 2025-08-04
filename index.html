@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>
+    Over Blue的第一个网页
+  </title>
+  <style>
+    /* 全局样式重置，解决边缘留白问题 */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      /* 确保根元素占满屏幕高度 */
+      overflow-x: hidden;
+      /* 禁止横向滚动，避免边缘白色缝隙 */
+    }
+
+    /* 页面主体样式 */
+    body {
+      min-height: 300vh;
+      /* 保证内容不足时仍占满屏幕 */
+      position: relative;
+      /* 为伪元素提供定位基准 */
+    }
+
+    /* 星空紫到深海蓝的放射渐变背景（带高斯模糊） */
+    body::before {
+      content: "";
+      position: fixed;
+      /* 关键：让背景层向所有方向扩展50px（覆盖模糊范围） */
+      top: -50px;
+      /* 向上扩展50px */
+      left: -50px;
+      /* 向左扩展50px */
+      right: -50px;
+      /* 向右扩展50px */
+      bottom: -50px;
+      /* 向下扩展50px */
+      /* 取消固定宽高，改用四边定位自动充满扩展后的区域 */
+      /* 放射渐变保持不变，边缘色与兜底色一致 */
+      background: radial-gradient(circle at center,
+          #5b21b6 10%,
+          #4338ca 60%,
+          #0f172a 100%
+          /* 边缘色与html/body背景一致 */
+        );
+      filter: blur(15px);
+      z-index: -1;
+    }
+
+    /* 标题h1样式 */
+    h1 {
+      text-align: center;
+      /* 文字水平居中 */
+      color: #38bdf8;
+      /* 调整为更亮的海蓝色，与深色背景对比更清晰 */
+      font-size: 2.5rem;
+      /* 增大字体，突出标题 */
+      margin-top: 50px;
+      /* 增加顶部距离，避免贴边 */
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      /* 轻微文字阴影，增强立体感 */
+    }
+
+    /* 副标题h2及图片样式 */
+    h2 {
+      text-align: center;
+      /* 内容居中 */
+      margin-top: 40px;
+      /* 与h1保持合适距离 */
+      color: #e0e7ff;
+      /* 浅紫色文字，与背景呼应且清晰 */
+      font-size: 1.5rem;
+      /* 适中字体大小 */
+    }
+
+    h2 img {
+      width: 220px;
+      /* 图片宽度略增大，更突出 */
+      height: auto;
+      /* 保持图片比例，避免变形 */
+      border-radius: 12px;
+      /* 增大圆角，更柔和 */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      /* 图片添加阴影，增强层次感 */
+      margin-bottom: 15px;
+      /* 图片与文字间增加距离 */
+    }
+
+    h3 {
+      text-align: center;
+      /* 内容居中 */
+      margin-top: 40px;
+      /* 与h1保持合适距离 */
+      color: #e0e7ff;
+      /* 浅紫色文字，与背景呼应且清晰 */
+      font-size: 1rem;
+      /* 适中字体大小 */
+    }
+
+    h3 img {
+      width: 20px;
+      /* 图片宽度略增大，更突出 */
+      height: auto;
+      /* 保持图片比例，避免变形 */
+      border-radius: 12px;
+      /* 增大圆角，更柔和 */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      /* 图片添加阴影，增强层次感 */
+      margin-bottom: 1px;
+      /* 图片与文字间增加距离 */
+    }
+
+    /* 鸣谢区整体样式：继承原h3的居中、间距 */
+    .thanks-section {
+      text-align: center;
+      margin-top: 40px;
+      color: #e0e7ff;
+      font-size: 1rem;
+    }
+
+    /* 单个鸣谢项：Flex垂直居中对齐 */
+    .thanks-item {
+      display: flex;
+      align-items: center;
+      /* 核心！图片与文字垂直居中 */
+      justify-content: center;
+      /* 水平居中（因外层text-align:center） */
+      margin: 8px 0;
+      /* 每项之间的间距，替代<br>的生硬换行 */
+    }
+
+    /* 头像样式：保持原有效果，增加与文字的间距 */
+    .thanks-item img {
+      width: 20px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      margin-right: 8px;
+      /* 图片与文字的间距（关键！） */
+    }
+
+    h4 {
+      /* 固定定位：相对于视口左下角 */
+      position: fixed;
+      left: 20px;
+      /* 距离左边缘20px */
+      bottom: 20px;
+      /* 距离底边缘20px */
+      margin: 0;
+      /* 清除默认边距，避免位置偏移 */
+      color: #0b4949;
+      /* 浅紫色文字，与背景呼应且清晰 */
+      font-size: 1rem;
+      /* 合适的字体大小 */
+      /* 可选：添加轻微阴影增强可读性 */
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 音乐控制按钮 */
+    .music-button {
+      position: fixed;
+      right: 180px;
+      /* 向右移动30px（原20px，增大数值向内靠） */
+      bottom: 100px;
+      /* 向上移动30px（原20px，增大数值向内靠） */
+      width: 60px;
+      height: 60px;
+      background: url('icons/play-circle.svg') no-repeat center;
+      background-size: 70%;
+      border-radius: 50%;
+      cursor: pointer;
+      animation: rotate 5s linear infinite;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+
+    /* 移动端适配（同步调整） */
+    @media (max-width: 768px) {
+      .music-button {
+        width: 50px;
+        height: 50px;
+        right: 180px;
+        /* 移动端向右20px（原10px） */
+        bottom: 100px;
+        /* 移动端向上40px（原10px） */
+      }
+    }
+
+    /* 点击缩放特效 */
+    .music-button.clicked {
+      transform: scale(1.2);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 暂停状态样式 */
+    .music-button.paused {
+      background-image: url('icons/pause-circle.svg');
+      animation-play-state: paused;
+      box-shadow: none;
+    }
+
+    /* 旋转动画 */
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* 适配移动端 */
+    @media (max-width: 768px) {
+      .music-button {
+        width: 50px;
+        height: 50px;
+        right: 10px;
+        bottom: 10px;
+      }
+    }
+  </style>
+
+</head>
+
+
+
+<body>
+
+  <h1>
+    <b>Over Blue</b>
+  </h1>
+
+  <h2>
+    <img src="images/logo.jpg" alt="Over Blue Logo">
+    <br>
+    <b>Over Blue</b>的首个网页
+    <br>
+    重磅推出！
+  </h2>
+
+  <div class="thanks-section">
+    <h3><b>特别鸣谢：</b></h3>
+    <div class="thanks-item">
+      <img src="images/myz.jpg" alt="马先生的头像">
+      <span>马依在 <b><i>赞助50RMB！</i></b></span>
+    </div>
+    <div class="thanks-item">
+      <img src="images/fmr.jpg" alt="冯先生的头像">
+      <span>冯明润 <b><i>赞助10RMB！</i></b></span>
+    </div>
+  </div>
+
+  <h4>
+
+    这是一个预览网页，非最终版本
+
+  </h4>
+
+  <!-- 音乐控制按钮 -->
+  <div id="musicButton" class="music-button" onclick="toggleMusic()"></div>
+
+  <!-- 音频播放器（隐藏） -->
+  <audio id="backgroundMusic" autoplay muted>
+    <source src="music.mp3" type="audio/mpeg">
+    <source src="music.ogg" type="audio/ogg">
+    你的浏览器不支持音频播放
+  </audio>
+
+  <script>
+    // 获取音频元素
+    const audio = document.getElementById('backgroundMusic');
+    const button = document.getElementById('musicButton');
+
+    // 初始化自动播放
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await audio.play(); // 尝试自动播放
+      } catch (error) {
+        // 处理自动播放失败（可能需要用户交互）
+        button.classList.add('error');
+        button.title = '点击播放音乐';
+      }
+    });
+
+    // 点击事件处理函数
+    function toggleMusic() {
+      // 播放/暂停音乐
+      if (audio.paused) {
+        audio.play();
+        audio.muted = false; // 解除静音
+        button.classList.remove('paused');
+        button.title = '点击暂停音乐';
+      } else {
+        audio.pause();
+        button.classList.add('paused');
+        button.title = '点击继续播放';
+      }
+
+      // 添加缩放特效
+      button.classList.add('clicked');
+      setTimeout(() => {
+        button.classList.remove('clicked');
+      }, 200);
+    }
+
+    // 音频播放状态监听
+    audio.addEventListener('play', () => {
+      button.classList.remove('error');
+      button.title = '点击暂停音乐';
+    });
+
+    audio.addEventListener('pause', () => {
+      button.title = '点击继续播放';
+    });
+
+    // 处理移动端触摸事件
+    button.addEventListener('touchstart', toggleMusic);
+  </script>
+
+</body>
+
+</html>
